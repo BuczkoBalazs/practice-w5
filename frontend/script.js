@@ -167,24 +167,62 @@ window.addEventListener("load", function() {
 */
 
 function loadEvent() {
-    console.log("My second function")
 
     let rootElement = document.getElementById("root");
 
-    let card = function (movieReceived){
-    
+    let card = function (title, year, rate){
         return `
         <div class="card">
-            <h2>${movieReceived.title}</h2>
-            <div class="time">${movieReceived.year}</div>
-            <div class="rate">${movieReceived.rate}</div>
+            <h2>${title}</h2>
+            <div class="time">${year}</div>
+            <div class="rate">${rate}</div>
         </div>
         `;
     };
 
+    let renderAllCardElements = function(incomingMoviesArray) {
+        let renderedCardList = "";
+        
+        // for ciklus, ami végigmegy a cardsArray-en
+        for (const incomingMovie of incomingMoviesArray) {
+
+            // for ciklus minden lépcsőjénél hozzáadja a renderedCardList-hez az adott elemet a megfelelő div card-ban
+            renderedCardList += `
+            <div class="card">
+                <h2>${incomingMovie.title}</h2>
+                <div class="time">${incomingMovie.year}</div>
+                <div class="rate">${incomingMovie.rate}</div>
+                </div>
+                `;
+        }
+        console.log(renderedCardList)
+
+        // return-li az elkészült elemekkel feltöltött cardList-et
+        return renderedCardList;
+    }
+
+
+    // movies.sort(function(a, b) {return a.year - b.year});
+
+    let newGoodMovies = [];
+
     for (const movieSend of movies) {
-        rootElement.insertAdjacentHTML("beforeend", card(movieSend));
+        // let newerThan2000 = false
+        // if (movieSend.year > 2000) {
+        //     newerThan2000 = true
+        // };
+        // if (newerThan2000) {
+        // };
+        // let floorRate = Math.floor(movieSend.rate);
+
+        if (movieSend.year > 2000 && movieSend.rate >= 8) {
+            newGoodMovies.push(movieSend);
+            // rootElement.insertAdjacentHTML("beforeend", card(movieSend.title, movieSend.year, floorRate));
+        };
     };
+    newGoodMovies.sort(function(a, b) {return a.year - b.year});
+
+    rootElement.insertAdjacentHTML("beforeend", renderAllCardElements(newGoodMovies));
 };
 window.addEventListener("load", loadEvent);
 
